@@ -12,12 +12,13 @@ import Button from "@mui/material/Button";
 export default function PaperSearch() {
   return (
     <Box
+      className= "papersearch"
       sx={{
         display: "flex",
         flexWrap: "wrap",
         "& > :not(style)": {
           m: 1,
-          width: "100vw",
+          width: "80vw",
         },
       }}
     >
