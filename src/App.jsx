@@ -2,6 +2,7 @@ import PaperSearch from './components/searchCars/PaperSearch'
 import NavBar from './components/navBar/NavBar'
 import CarForms from './components/CarForm/CarForms'
 import CarCards from './components/cards/CarCards'
+import Footer from './components/footer/Footer'
 // import './App.css'
 
 function App() {
@@ -19,6 +20,8 @@ function App() {
 
 
         <CarCards/>
+
+        <Footer/>
         </>
       //</Routes>
     //</BrowserRouter>  
