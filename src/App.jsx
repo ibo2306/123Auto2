@@ -1,20 +1,28 @@
-import { useState } from 'react'
 import PaperSearch from './components/searchCars/PaperSearch'
 import NavBar from './components/navBar/NavBar'
 import CarForms from './components/CarForm/CarForms'
+import CarCards from './components/cards/CarCards'
 // import './App.css'
 
 function App() {
 
   return (
-    <>
-      <NavBar/>
+    
+    //<BrowserRouter>
+      //<Routes>
+      <>
+        <NavBar/>
+        
+        <PaperSearch/>
       
-      <PaperSearch/>
-     
-      <CarForms/>
-      
-    </>
+        <CarForms/>
+
+
+        <CarCards/>
+        </>
+      //</Routes>
+    //</BrowserRouter>  
+    
   )
 }
 
