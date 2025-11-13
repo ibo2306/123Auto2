@@ -10,13 +10,7 @@ import SignUpPage from "./components/pages/SignUpPage";
 
 function App() {
   return (
-    <div 
-    style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <>
       <NavBar />
 
       <BrowserRouter>
@@ -44,7 +38,7 @@ function App() {
       </BrowserRouter>
 
       <Footer />
-    </div>
+    </>
   );
 }
 
