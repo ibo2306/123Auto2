@@ -12,6 +12,8 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { FaHeart } from "react-icons/fa6";
+import { FaBell } from "react-icons/fa";
 
 
 const pages = ['Kaufen', 'Verkaufen', 'Informieren'];
@@ -92,7 +94,7 @@ function NavBar() {
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem  key={page} onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
                 </MenuItem>
               ))}
@@ -129,9 +131,19 @@ function NavBar() {
             ))}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="Benachrichtigungen">
+              <IconButton>
+                  <FaBell />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Merkzettel">
+              <IconButton >
+                  <FaHeart />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Einstellungen">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt="Remy Sharp" />
               </IconButton>
             </Tooltip>
             <Menu

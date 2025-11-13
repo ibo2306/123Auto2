@@ -1,0 +1,38 @@
+ .fenster{
+   background-color: rgb(162, 224, 240);
+    border-radius: 10px;
+    justify-content: center;
+    text-align: center;
+    width: 500px;
+    height: 500px;
+    padding-top: 40px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.fenster .title{
+    font-size: larger;
+    font-weight: bolder;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
+.fenster .inputField{
+    border-radius: 10px;
+    margin: 10px;
+    width: 350px;
+    height: 30px;
+}
+
+.fenster .button{
+    border-radius: 10px;
+    color: white;
+    margin-top: 20px;
+    width: 360px;
+    height: 35px;
+    background-color: rgb(23, 53, 92);
+}
+
+.fenster .label{
+    align-self: flex-start;
+}

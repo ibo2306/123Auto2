@@ -50,3 +50,7 @@
 .Logo:hover{
     transform: scale(1.2);
 }
+
+.navitem:hover{
+    font-size: 50px  !important;
+}
