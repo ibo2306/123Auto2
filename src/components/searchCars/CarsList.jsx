@@ -1,13 +1,9 @@
-const CarsList = [
-  { label: "Audi", modeltyp: "A3", price: 10000, image: "" },
-  { label: "Audi", modeltyp: "A4", price: 20000 },
-  { label: "BMW" },
-  { label: "Mercedes " },
-  { label: "Skoda" },
-  { label: "Volkswagen" },
-  { label: "Toyota" },
-  { label: "Porsche" },
-  { label: "Nissan" },
-];
+const CarsList = {
+  Audi: ["A3", "A4", "A6", "Q5"],
+  BMW: ["1er", "3er", "5er"],
+  Mercedes: ["A-Klasse", "C-Klasse"],
+  Skoda: ["Octavia", "Fabia"],
+  Volkswagen: ["Golf", "Passat"],
+};
 
 export default CarsList;

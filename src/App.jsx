@@ -6,6 +6,8 @@ import Footer from "./components/footer/Footer";
 import HomePage from "./components/pages/HomePage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SignUpPage from "./components/pages/SignUpPage";
+import SignInPage from "./components/pages/SignInPage";
+import NewCarPage from "./components/pages/NewCarPage";
 // import './App.css'
 
 function App() {
@@ -20,15 +22,15 @@ function App() {
 
            <Route path= "/SignUp" element={<SignUpPage/>}/>
 
+          <Route path= "/SignIn" element={<SignInPage/>}/>
+
+          <Route path= "/NewCar" element={<NewCarPage/>}/>
+
            {/* <Route path= "/cars" element={<CarsPage/>}/>
 
            <Route path= "/contact" element={<ContactPage/>}/>
 
            <Route path= "/dashboard" element={<DashboardPage/>}/>
-
-           
-
-           <Route path= "/SignIn" element={<SignInPage/>}/>
 
            <Route path= "/privacyPolicy" element={<PrivacyPolicyPage/>}/>
 

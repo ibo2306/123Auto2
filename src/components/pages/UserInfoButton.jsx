@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function UserInfoButton() {
+export default function UserInfoButton({onClick}) {
   return (
     <div>
-      <button className='button'>SUBMIT</button>
+      <button onClick={onClick} className='button'>erstellen</button>
     </div>
   )
 }
