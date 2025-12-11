@@ -1,13 +1,12 @@
 import React from "react";
 
-
 export default function MessageList({ messages }) {
   return (
     <div className="message-list">
-      {messages.map((msg, index) => (
+      {messages.map((msg) => (
         <div
-          key={index}
-          className={`message-bubble ${msg.isUser ? "user" : "bot"}`}
+          key={msg.id}
+          className={`message-bubble ${msg.role === 'user' ? 'user' : 'bot'}`}
         >
           {msg.text}
         </div>
