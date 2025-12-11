@@ -5,7 +5,7 @@ import "./ChatBotPage.css";
 
 export default function ChatWindow(){
   const [messages, setMessages] = useState([
-    { id: "m0", role: "assistant", text: "Hallo! Wie kann ich helfen?" }
+    { id: "m0", role: "assistant", text: "Hey! Wie kann ich dir helfen? 🚗" }
   ]);
 
   const sendMessage = (text) => {
