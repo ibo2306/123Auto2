@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SignUpPage from "./components/pages/SignUpPage";
 import SignInPage from "./components/pages/SignInPage";
 import NewCarPage from "./components/pages/NewCarPage";
+import ChatBotPage from "./components/pages/ChatBotPage";
 // import './App.css'
 
 function App() {
@@ -26,7 +27,11 @@ function App() {
 
           <Route path= "/NewCar" element={<NewCarPage/>}/>
 
+          <Route path= "/ChatBot" element={<ChatBotPage/>}/>
+          
            {/* <Route path= "/cars" element={<CarsPage/>}/>
+
+           <Route path= "/ChatBot" element={<ChatBotPage/>}/>
 
            <Route path= "/contact" element={<ContactPage/>}/>
 
