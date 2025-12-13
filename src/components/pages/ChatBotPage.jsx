@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../chatBot/ChatBotPage.css";
 import ChatWindow from "../chatBot/ChatWindow";
-import ChatInput from "../chatBot/ChatInput";
 import ChatSidebar from "../chatBot/ChatSidebar";
 
 export default function ChatBotPage() {
@@ -9,14 +8,34 @@ export default function ChatBotPage() {
     { id: "m0", role: "assistant", text: "Hey! Wie kann ich dir helfen? 🚗" }
   ]);
 
-  const sendMessage = (text) => {
+  const sendMessage = async (text) => {
     const userMsg = { id: Date.now().toString(), role: "user", text };
     setMessages((m) => [...m, userMsg]);
 
-    // Simulate a bot response after a delay
-    setTimeout(() => {
-      setMessages((m) => [...m, { id: "bot_" + Date.now(), role: "assistant", text: "Das ist eine Antwort von der KI." }]);
-    }, 1000);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_OPENAI_API_BASE}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: 'Qwen-Next-80B-Thinking-Q5_K_M.gguf',
+          messages: messages.map(msg => ({ role: msg.role, content: msg.text }))
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('API error');
+      }
+
+      const data = await response.json();
+      const botResponse = data.choices[0].message.content;
+      setMessages((m) => [...m, { id: "bot_" + Date.now(), role: "assistant", text: botResponse }]);
+    } catch (error) {
+      console.error('Error:', error);
+      setMessages((m) => [...m, { id: "bot_" + Date.now(), role: "assistant", text: "Entschuldigung, es gab einen Fehler." }]);
+    }
   };
 
   return (
@@ -30,7 +49,6 @@ export default function ChatBotPage() {
           <p>Frag mich nach Autos, Modellen, Preisen oder Empfehlungen!</p>
         </div>
         <ChatWindow messages={messages} sendMessage={sendMessage} />
-        <ChatInput onSend={sendMessage} />
       </main>
     </div>
   );
