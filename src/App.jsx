@@ -14,10 +14,13 @@ import ChatBotPage from "./components/pages/ChatBotPage";
 function App() {
   return (
     <>
+      
+      <BrowserRouter>
+
       <NavBar />
 
-      <BrowserRouter>
         <Routes>
+
 
            <Route path= "/" element={<HomePage/>}/>
 

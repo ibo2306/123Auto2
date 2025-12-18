@@ -14,15 +14,17 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { FaHeart } from "react-icons/fa6";
 import { FaBell } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 
-const pages = ['Kaufen', 'Verkaufen', 'Informieren'];
+const pages = [{name:'Kaufen',route:"/"},{name:'Verkaufen', route:"/NewCar"}, {name:'Autoberater-KI', route:"/ChatBot"}];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 
 function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -47,6 +49,7 @@ function NavBar() {
             src='public\assets\AutoLogo.png'
             alt='Logo'
             className='Logo'
+            onClick={() => navigate("./")}
             />
           <Typography
             variant="h6"
@@ -94,8 +97,8 @@ function NavBar() {
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
               {pages.map((page) => (
-                <MenuItem  key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
+                <MenuItem  key={page.name} onClick={handleCloseNavMenu}>
+                  <Typography sx={{ textAlign: 'center' }}>{page.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -122,11 +125,14 @@ function NavBar() {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
-                key={page}
-                onClick={handleCloseNavMenu}
+                key={page.name}
+                onClick={() => {
+                  handleCloseNavMenu();
+                  navigate(page.route);
+                }}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                {page.name}
               </Button>
             ))}
           </Box>
