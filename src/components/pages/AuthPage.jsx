@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { login, register } from "../../api/auth";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -17,6 +17,7 @@ export default function AuthPage() {
   const [errorMsg, setErrorMsg] = useState("");
 
   const navigate = useNavigate();
+  const { login, register } = useAuth();
 
   async function handleSubmit() {
     setLoading(true);
@@ -26,9 +27,9 @@ export default function AuthPage() {
       if (mode === "login") {
         await login(email, password);
       } else {
-        await register(email, password); // ✅ speichert Token direkt
+        await register(email, password);
       }
-      navigate("/"); // nach Login/Register zur Startseite
+      navigate("/");
     } catch (e) {
       setErrorMsg(e.message || "Fehler");
     } finally {

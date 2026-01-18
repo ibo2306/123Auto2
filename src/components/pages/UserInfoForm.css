@@ -47,5 +47,5 @@
 .form-grid {
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Abstand zwischen Feldern */
+  gap: 15px;
 }

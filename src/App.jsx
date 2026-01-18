@@ -5,12 +5,11 @@ import CarCards from "./components/cards/CarCards";
 import Footer from "./components/footer/Footer";
 import HomePage from "./components/pages/HomePage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import SignUpPage from "./components/pages/SignUpPage";
-import SignInPage from "./components/pages/SignInPage";
 import NewCarPage from "./components/pages/NewCarPage";
 import ChatBotPage from "./components/pages/ChatBotPage";
 import AuthPage from "./components/pages/AuthPage";
 import ProfilePage from "./components/pages/ProfilePage";
+import { AuthProvider } from "./context/AuthContext";
 
 
 // import './App.css'
@@ -18,45 +17,37 @@ import ProfilePage from "./components/pages/ProfilePage";
 function App() {
   return (
     <>
-      
+
       <BrowserRouter>
+        <AuthProvider>
 
-      <NavBar />
+        <NavBar />
 
-        <Routes>
-
-
-           <Route path= "/" element={<HomePage/>}/>
-
-           <Route path= "/SignUp" element={<SignUpPage/>}/>
-
-          <Route path= "/SignIn" element={<SignInPage/>}/>
-
-          <Route path= "/NewCar" element={<NewCarPage/>}/>
-
-          <Route path= "/ChatBot" element={<ChatBotPage/>}/>
-
-          <Route path= "/Cars" element={<CarCards/>}/>
-
-          <Route path="/auth" element={<AuthPage />} />
-
-          <Route path="/profile" element={<ProfilePage />} />
+          <Routes>
 
 
-          
-           {/* <Route path= "/cars" element={<CarsPage/>}/>
+             <Route path= "/" element={<HomePage/>}/>
 
-           <Route path= "/ChatBot" element={<ChatBotPage/>}/>
+            <Route path= "/NewCar" element={<NewCarPage/>}/>
 
-           <Route path= "/contact" element={<ContactPage/>}/>
+            <Route path= "/ChatBot" element={<ChatBotPage/>}/>
 
-           <Route path= "/dashboard" element={<DashboardPage/>}/>
+            <Route path= "/Cars" element={<CarCards/>}/>
 
-           <Route path= "/privacyPolicy" element={<PrivacyPolicyPage/>}/>
+            <Route path="/auth" element={<AuthPage />} />
 
-           <Route path= "/imprint" element={<ImprintPage/>}/> */}
+            <Route path="/profile" element={<ProfilePage />} />
 
-        </Routes>
+
+             {/* 
+             <Route path= "/contact" element={<ContactPage/>}/>
+
+             <Route path= "/privacyPolicy" element={<PrivacyPolicyPage/>}/>
+             
+             */}
+
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
 
       <Footer />
