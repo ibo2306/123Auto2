@@ -41,10 +41,8 @@ export default function Cards({
     const [isFavorite, setIsFavorite] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
 
-    // Favoriten-Status laden
     React.useEffect(() => {
         if (user && token) {
-            // Eingeloggt: vom Backend laden
             fetch(`http://localhost:8000/favorites/check/${id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             })
@@ -52,7 +50,6 @@ export default function Cards({
                 .then((data) => setIsFavorite(data.isFavorite))
                 .catch(() => setIsFavorite(false));
         } else {
-            // Nicht eingeloggt: aus localStorage
             const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
             setIsFavorite(favorites.includes(id));
         }
@@ -70,7 +67,6 @@ export default function Cards({
 
         try {
             if (isFavorite) {
-                // Entfernen
                 await fetch(`http://localhost:8000/favorites/${id}`, {
                     method: "DELETE",
                     headers: { Authorization: `Bearer ${token}` },
@@ -78,7 +74,6 @@ export default function Cards({
                 setIsFavorite(false);
                 if (onFavoriteChange) onFavoriteChange(id);
             } else {
-                // Hinzufügen
                 await fetch(`http://localhost:8000/favorites/${id}`, {
                     method: "POST",
                     headers: { Authorization: `Bearer ${token}` },
@@ -92,7 +87,6 @@ export default function Cards({
         }
     };
 
-    // Teilen-Funktion
     const handleShare = (e) => {
         e.stopPropagation();
         if (navigator.share) {
@@ -107,19 +101,19 @@ export default function Cards({
         }
     };
 
-    // Zur Detailseite navigieren
+    
     const handleCardClick = () => {
         navigate(`/car/${id}`);
     };
 
 
-    // Jahr aus first_registration extrahieren
     const year = first_registration?.slice(-4) || first_registration;
 
     return (
         <Card
             sx={{
-                maxWidth: 345,
+                maxWidth: { xs: "100%", sm: 345 },
+                width: "100%",
                 cursor: "pointer",
                 transition: "transform 0.2s, box-shadow 0.2s",
                 "&:hover": {
@@ -129,7 +123,6 @@ export default function Cards({
             }}
             onClick={handleCardClick}
         >
-            {/* Header mit Marke */}
             <CardHeader
                 avatar={
                     <Avatar  aria-label="brand">
@@ -144,7 +137,7 @@ export default function Cards({
                 subheader={title || subheader}
             />
 
-            {/* Bild */}
+           
             {imageUrl && (
                 <CardMedia
                     component="img"
@@ -156,7 +149,6 @@ export default function Cards({
             )}
 
             <CardContent sx={{ pb: 1 }}>
-                {/* Chips für Type, Stadt, Jahr */}
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5, mb: 1.5 }}>
                     {type && (
                         <Chip
@@ -193,7 +185,6 @@ export default function Cards({
                     )}
                 </Box>
 
-                {/* Preis - prominent */}
                 <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
                     <LocalOfferIcon sx={{ color: "success.main", mr: 0.5 }} />
                     <Typography
@@ -205,7 +196,6 @@ export default function Cards({
                     </Typography>
                 </Box>
 
-                {/* Beschreibung */}
                 {text && (
                     <Typography
                         variant="body2"
@@ -223,7 +213,6 @@ export default function Cards({
                 )}
             </CardContent>
 
-            {/* Actions */}
             <CardActions sx={{ justifyContent: "space-between", px: 2, pb: 2 }}>
                 <Box>
                     <IconButton

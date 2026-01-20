@@ -21,7 +21,7 @@ export default function ImpressumPage() {
                     <br />
                     Musterstraße 1
                     <br />
-                    1010 Wien
+                    4020 Linz
                     <br />
                     Österreich
                 </Typography>

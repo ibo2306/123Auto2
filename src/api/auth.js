@@ -10,7 +10,7 @@ export async function register(email, password) {
   const data = await res.json();
   if (!res.ok) throw new Error(data.detail || "Register failed");
 
-  // ✅ direkt einloggen
+  // direkt einloggen
   localStorage.setItem("token", data.token);
   return data.user;
 }

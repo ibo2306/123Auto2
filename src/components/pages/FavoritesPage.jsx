@@ -16,7 +16,6 @@ export default function FavoritesPage() {
     const { user, token } = useAuth();
     const navigate = useNavigate();
 
-    // Favoriten laden
     useEffect(() => {
         if (!token) {
             setLoading(false);
@@ -43,12 +42,10 @@ export default function FavoritesPage() {
             });
     }, [token]);
 
-    // Callback wenn Favorit entfernt wird
     const handleFavoriteRemoved = (carId) => {
         setFavorites((prev) => prev.filter((car) => car.id !== carId));
     };
 
-    // Nicht eingeloggt
     if (!user) {
         return (
             <Box sx={{ textAlign: "center", mt: 10 }}>
@@ -67,7 +64,7 @@ export default function FavoritesPage() {
         );
     }
 
-    // Laden
+    
     if (loading) {
         return (
             <Box sx={{ display: "flex", justifyContent: "center", mt: 10 }}>
@@ -76,7 +73,7 @@ export default function FavoritesPage() {
         );
     }
 
-    // Fehler
+    
     if (error) {
         return (
             <Box sx={{ textAlign: "center", mt: 10 }}>

@@ -6,12 +6,9 @@ import CarCards from '../cards/CarCards'
 export default function HomePage() {
   return (
     <div>
-
         <PaperSearch/>
 
         <CarForms />
-
-      
     </div>
   )
 }

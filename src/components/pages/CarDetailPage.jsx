@@ -29,7 +29,6 @@ export default function CarDetailPage() {
     const [error, setError] = useState("");
     const [isFavorite, setIsFavorite] = useState(false);
 
-    // Auto laden
     useEffect(() => {
         fetch(`http://localhost:8000/card/${id}`)
             .then((res) => {
@@ -47,13 +46,11 @@ export default function CarDetailPage() {
             });
     }, [id]);
 
-    // Favoriten-Status laden
     useEffect(() => {
         const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
         setIsFavorite(favorites.includes(id));
     }, [id]);
 
-    // Favorit togglen
     const handleFavoriteClick = () => {
         const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
         if (isFavorite) {
@@ -67,7 +64,6 @@ export default function CarDetailPage() {
         }
     };
 
-    // Teilen
     const handleShare = () => {
         if (navigator.share) {
             navigator.share({
@@ -106,7 +102,6 @@ export default function CarDetailPage() {
 
     return (
         <Box sx={{ maxWidth: 1200, margin: "auto", p: 3 }}>
-            {/* Header */}
             <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
                 <IconButton onClick={() => navigate(-1)} sx={{ mr: 2 }}>
                     <ArrowBackIcon />
@@ -127,7 +122,6 @@ export default function CarDetailPage() {
             </Box>
 
             <Grid container spacing={4}>
-                {/* Bild */}
                 <Grid item xs={12} md={7}>
                     <Paper elevation={3} sx={{ overflow: "hidden", borderRadius: 2 }}>
                         {car.imageUrl ? (
@@ -158,10 +152,8 @@ export default function CarDetailPage() {
                     </Paper>
                 </Grid>
 
-                {/* Details */}
                 <Grid item xs={12} md={5}>
                     <Paper elevation={3} sx={{ p: 3, borderRadius: 2 }}>
-                        {/* Preis */}
                         <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
                             <LocalOfferIcon sx={{ color: "success.main", mr: 1, fontSize: 32 }} />
                             <Typography
@@ -174,7 +166,6 @@ export default function CarDetailPage() {
 
                         <Divider sx={{ mb: 3 }} />
 
-                        {/* Tags */}
                         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 3 }}>
                             {car.type && (
                                 <Chip
@@ -198,14 +189,12 @@ export default function CarDetailPage() {
                             )}
                         </Box>
 
-                        {/* Titel */}
                         {car.title && (
                             <Typography variant="h6" gutterBottom>
                                 {car.title}
                             </Typography>
                         )}
 
-                        {/* Beschreibung */}
                         {car.text && (
                             <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
                                 {car.text}
@@ -214,7 +203,6 @@ export default function CarDetailPage() {
 
                         <Divider sx={{ mb: 3 }} />
 
-                        {/* Kontakt Buttons */}
                         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                             <Button
                                 variant="contained"
@@ -236,7 +224,6 @@ export default function CarDetailPage() {
                     </Paper>
                 </Grid>
 
-                {/* Fahrzeugdaten */}
                 <Grid item xs={12}>
                     <Paper elevation={3} sx={{ p: 3, borderRadius: 2 }}>
                         <Typography variant="h5" gutterBottom>

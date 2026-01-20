@@ -17,8 +17,6 @@ import DatenschutzPage from "./components/pages/DatenschutzPage";
 import { AuthProvider } from "./context/AuthContext";
 
 
-// import './App.css'
-
 function App() {
   return (
     <>

@@ -8,8 +8,19 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
+import Chip from "@mui/material/Chip";
+import Skeleton from "@mui/material/Skeleton";
+import InputAdornment from "@mui/material/InputAdornment";
 import { Link } from "react-router-dom";
 import Cards from "../cards/Cards";
+import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import CategoryIcon from "@mui/icons-material/Category";
+import EuroIcon from "@mui/icons-material/Euro";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import SearchIcon from "@mui/icons-material/Search";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import TuneIcon from "@mui/icons-material/Tune";
 
 export default function PaperSearch() {
   const [selectedBrand, setSelectedBrand] = useState(null);
@@ -23,11 +34,10 @@ export default function PaperSearch() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // Dynamische Listen vom Backend
   const [brands, setBrands] = useState([]);
   const [models, setModels] = useState([]);
 
-  // Marken beim Start laden
+  
   useEffect(() => {
     fetch("http://localhost:8000/brands")
       .then((res) => res.json())
@@ -35,7 +45,7 @@ export default function PaperSearch() {
       .catch((err) => console.error("Fehler beim Laden der Marken:", err));
   }, []);
 
-  // Modelle laden wenn Marke ausgewählt wird
+ 
   useEffect(() => {
     if (selectedBrand) {
       fetch(`http://localhost:8000/models?brand=${encodeURIComponent(selectedBrand)}`)
@@ -67,12 +77,46 @@ export default function PaperSearch() {
       setCards(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error(err);
-      setErrorMsg("❌ Fehler beim Laden der Ergebnisse.");
+      setErrorMsg("Fehler beim Laden der Ergebnisse.");
       setCards([]);
     } finally {
       setLoading(false);
     }
   }
+
+
+  function resetFilters() {
+    setSelectedBrand(null);
+    setSelectedModel(null);
+    setPriceMax(null);
+    setRegMin(null);
+    setCity("");
+    setCards([]);
+    setErrorMsg("");
+  }
+
+  
+  const activeFilters = [
+    selectedBrand && { key: "brand", label: selectedBrand, onDelete: () => { setSelectedBrand(null); setSelectedModel(null); } },
+    selectedModel && { key: "model", label: selectedModel, onDelete: () => setSelectedModel(null) },
+    priceMax && { key: "price", label: `bis ${Number(priceMax).toLocaleString("de-DE")} €`, onDelete: () => setPriceMax(null) },
+    regMin && { key: "reg", label: `ab ${regMin}`, onDelete: () => setRegMin(null) },
+    city && { key: "city", label: city, onDelete: () => setCity("") },
+  ].filter(Boolean);
+
+  
+  const SkeletonCard = () => (
+    <Paper sx={{ p: 2, height: 320 }}>
+      <Skeleton variant="rectangular" height={140} sx={{ mb: 2, borderRadius: 1 }} />
+      <Skeleton variant="text" width="60%" height={28} />
+      <Skeleton variant="text" width="40%" height={20} sx={{ mb: 1 }} />
+      <Box sx={{ display: "flex", gap: 1, mb: 1 }}>
+        <Skeleton variant="rounded" width={60} height={24} />
+        <Skeleton variant="rounded" width={80} height={24} />
+      </Box>
+      <Skeleton variant="text" width="50%" height={32} />
+    </Paper>
+  );
 
   return (
     <Box
@@ -80,17 +124,41 @@ export default function PaperSearch() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        "& > :not(style)": {
-          m: 1,
-          width: "80vw",
-        },
+        alignItems: "center",
+        px: { xs: 2, sm: 3, md: 4 },
+        py: 3,
       }}
     >
-      {/* Filter */}
-      <Paper className="paper" elevation={3}>
+      
+      <Paper
+        className="paper"
+        elevation={4}
+        sx={{
+          width: { xs: "100%", sm: "95%", md: "85%", lg: "80%" },
+          maxWidth: 1200,
+          p: { xs: 2, sm: 3, md: 4 },
+          borderRadius: 3,
+          background: "linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)",
+        }}
+      >
+        
+        <Box sx={{ textAlign: "center", mb: 3 }}>
+          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 1, mb: 1 }}>
+            <TuneIcon sx={{ fontSize: 32, color: "primary.main" }} />
+            <Typography variant="h4" fontWeight="bold" color="primary.main">
+              Finde dein Traumauto
+            </Typography>
+          </Box>
+          <Typography variant="body1" color="text.secondary">
+            Nutze die Filter, um das perfekte Fahrzeug zu finden
+          </Typography>
+        </Box>
+
+        <Divider sx={{ mb: 3 }} />
+
+        
         <Grid container spacing={3}>
-          {/* Marke Dropdown */}
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={6} md={4}>
             <Autocomplete
               disablePortal
               options={brands}
@@ -100,14 +168,28 @@ export default function PaperSearch() {
                 setSelectedModel(null);
               }}
               renderInput={(params) => (
-                <TextField {...params} label="Alle Marken" />
+                <TextField
+                  {...params}
+                  label="Marke"
+                  InputProps={{
+                    ...params.InputProps,
+                    startAdornment: (
+                      <>
+                        <InputAdornment position="start">
+                          <DirectionsCarIcon color="action" />
+                        </InputAdornment>
+                        {params.InputProps.startAdornment}
+                      </>
+                    ),
+                  }}
+                />
               )}
-              sx={{ width: 180 }}
+              fullWidth
             />
           </Grid>
 
-          {/* Modell Dropdown */}
-          <Grid item xs={4}>
+         
+          <Grid item xs={12} sm={6} md={4}>
             <Autocomplete
               disablePortal
               disabled={!selectedBrand}
@@ -115,14 +197,28 @@ export default function PaperSearch() {
               value={selectedModel}
               onChange={(e, value) => setSelectedModel(value)}
               renderInput={(params) => (
-                <TextField {...params} label="Alle Modelle" />
+                <TextField
+                  {...params}
+                  label="Modell"
+                  InputProps={{
+                    ...params.InputProps,
+                    startAdornment: (
+                      <>
+                        <InputAdornment position="start">
+                          <CategoryIcon color="action" />
+                        </InputAdornment>
+                        {params.InputProps.startAdornment}
+                      </>
+                    ),
+                  }}
+                />
               )}
-              sx={{ width: 180 }}
+              fullWidth
             />
           </Grid>
 
-          {/* Preis */}
-          <Grid item xs={4}>
+          
+          <Grid item xs={12} sm={6} md={4}>
             <Autocomplete
               freeSolo
               options={["5000", "10000", "20000", "50000"]}
@@ -130,14 +226,29 @@ export default function PaperSearch() {
               onChange={(e, value) => setPriceMax(value)}
               onInputChange={(e, value) => setPriceMax(value)}
               renderInput={(params) => (
-                <TextField {...params} label="Preis bis (€)" type="number" />
+                <TextField
+                  {...params}
+                  label="Preis bis"
+                  type="number"
+                  InputProps={{
+                    ...params.InputProps,
+                    startAdornment: (
+                      <>
+                        <InputAdornment position="start">
+                          <EuroIcon color="action" />
+                        </InputAdornment>
+                        {params.InputProps.startAdornment}
+                      </>
+                    ),
+                  }}
+                />
               )}
-              sx={{ width: 180 }}
+              fullWidth
             />
           </Grid>
 
-          {/* Erstzulassung */}
-          <Grid item xs={4}>
+          
+          <Grid item xs={12} sm={6} md={4}>
             <Autocomplete
               freeSolo
               options={["2010", "2015", "2018", "2020", "2022", "2024"]}
@@ -145,89 +256,187 @@ export default function PaperSearch() {
               onChange={(e, value) => setRegMin(value)}
               onInputChange={(e, value) => setRegMin(value)}
               renderInput={(params) => (
-                <TextField {...params} label="Erstzulassung ab" type="number" />
+                <TextField
+                  {...params}
+                  label="Erstzulassung ab"
+                  type="number"
+                  InputProps={{
+                    ...params.InputProps,
+                    startAdornment: (
+                      <>
+                        <InputAdornment position="start">
+                          <CalendarMonthIcon color="action" />
+                        </InputAdornment>
+                        {params.InputProps.startAdornment}
+                      </>
+                    ),
+                  }}
+                />
               )}
-              sx={{ width: 180 }}
+              fullWidth
             />
           </Grid>
 
-          {/* Stadt */}
-          <Grid item xs={4}>
+          
+          <Grid item xs={12} sm={6} md={4}>
             <TextField
               label="Stadt / PLZ"
               variant="outlined"
-              sx={{ width: 180 }}
+              fullWidth
               value={city}
               onChange={(e) => setCity(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <LocationOnIcon color="action" />
+                  </InputAdornment>
+                ),
+              }}
             />
           </Grid>
 
-          {/* Button */}
-          <Grid item xs={4}>
-            <Button
-              sx={{ width: 180, height: 56 }}
-              variant="contained"
-              onClick={fetchFilteredCars}
-              disabled={loading}
-            >
-              {loading ? "Lädt..." : "Ergebnisse"}
-            </Button>
+          
+          <Grid item xs={12} sm={6} md={4}>
+            <Box sx={{ display: "flex", gap: 1, height: "100%" }}>
+              <Button
+                sx={{ flex: 2, height: 56 }}
+                variant="contained"
+                onClick={fetchFilteredCars}
+                disabled={loading}
+                startIcon={<SearchIcon />}
+                size="large"
+              >
+                {loading ? "Suche..." : "Suchen"}
+              </Button>
+              <Button
+                sx={{ flex: 1, height: 56 }}
+                variant="outlined"
+                onClick={resetFilters}
+                color="secondary"
+                title="Filter zurücksetzen"
+              >
+                <RestartAltIcon />
+              </Button>
+            </Box>
           </Grid>
         </Grid>
 
-        <Grid item xs={4}>
+    
+        {activeFilters.length > 0 && (
+          <Box sx={{ mt: 3, display: "flex", flexWrap: "wrap", gap: 1, alignItems: "center" }}>
+            <Typography variant="body2" color="text.secondary" sx={{ mr: 1 }}>
+              Aktive Filter:
+            </Typography>
+            {activeFilters.map((filter) => (
+              <Chip
+                key={filter.key}
+                label={filter.label}
+                onDelete={filter.onDelete}
+                color="primary"
+                variant="outlined"
+                size="small"
+              />
+            ))}
+          </Box>
+        )}
+
+        
+        <Box sx={{ mt: 3, textAlign: "center" }}>
           <Button
-            sx={{ width: 180, height: 56 }}
-            variant="outlined"
+            variant="text"
             component={Link}
             to="/cars"
+            sx={{ textTransform: "none" }}
           >
-          Alle Autos
+            Alle Fahrzeuge anzeigen
           </Button>
-        </Grid>
+        </Box>
       </Paper>
 
-      {/* Ergebnisse */}
-      <Paper elevation={1} sx={{ p: 2 }}>
-        <Typography variant="h6" sx={{ mb: 1 }}>
-          Ergebnisse
-        </Typography>
-        <Divider sx={{ mb: 2 }} />
+  
+      <Paper
+        elevation={2}
+        sx={{
+          width: { xs: "100%", sm: "95%", md: "85%", lg: "80%" },
+          maxWidth: 1200,
+          mt: 3,
+          p: { xs: 2, sm: 3 },
+          borderRadius: 3,
+        }}
+      >
+        
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+          <Typography variant="h6">
+            Ergebnisse
+          </Typography>
+          {cards.length > 0 && (
+            <Chip
+              label={`${cards.length} Fahrzeug${cards.length !== 1 ? "e" : ""} gefunden`}
+              color="success"
+              size="small"
+            />
+          )}
+        </Box>
 
+        <Divider sx={{ mb: 3 }} />
+
+        
         {errorMsg && (
-          <Typography variant="body2" color="error" sx={{ mb: 2 }}>
-            {errorMsg}
-          </Typography>
+          <Box sx={{ textAlign: "center", py: 4 }}>
+            <Typography variant="body1" color="error">
+              {errorMsg}
+            </Typography>
+          </Box>
         )}
 
+        
+        {loading && (
+          <Grid container spacing={3}>
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <Grid item xs={12} sm={6} md={4} key={i}>
+                <SkeletonCard />
+              </Grid>
+            ))}
+          </Grid>
+        )}
+
+        
         {!loading && cards.length === 0 && !errorMsg && (
-          <Typography variant="body2">
-            Noch keine Ergebnisse. Filter wählen und auf „Ergebnisse“ klicken.
-          </Typography>
+          <Box sx={{ textAlign: "center", py: 6 }}>
+            <DirectionsCarIcon sx={{ fontSize: 64, color: "text.disabled", mb: 2 }} />
+            <Typography variant="h6" color="text.secondary" gutterBottom>
+              Noch keine Ergebnisse
+            </Typography>
+            <Typography variant="body2" color="text.disabled">
+              Wähle Filter aus und klicke auf "Suchen"
+            </Typography>
+          </Box>
         )}
 
-        <Grid container spacing={3}>
-          {cards.map((card) => (
-            <Grid item xs={12} sm={6} md={4} key={card.id}>
-              <Cards
-                id={card.id}
-                title={card.title}
-                subheader={card.subtitle}
-                imageUrl={card.imageUrl}
-                text={card.text}
-                price={card.price}
-                brand={card.brand}
-                model={card.model}
-                city={card.city}
-                first_registration={card.first_registration}
-                type={card.type}
-                colour={card.colour}
-              />
-            </Grid>
-          ))}
-        </Grid>
+        
+        {!loading && cards.length > 0 && (
+          <Grid container spacing={3}>
+            {cards.map((card) => (
+              <Grid item xs={12} sm={6} md={4} key={card.id}>
+                <Cards
+                  id={card.id}
+                  title={card.title}
+                  subheader={card.subtitle}
+                  imageUrl={card.imageUrl}
+                  text={card.text}
+                  price={card.price}
+                  brand={card.brand}
+                  model={card.model}
+                  city={card.city}
+                  first_registration={card.first_registration}
+                  type={card.type}
+                  colour={card.colour}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Paper>
-
     </Box>
   );
 }

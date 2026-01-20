@@ -11,17 +11,12 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import { FaHeart } from "react-icons/fa6";
 import { FaBell } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import UserMenu from "./UserMenu";
 
-
-
 const pages = [{name:'Kaufen',route:"/"},{name:'Verkaufen', route:"/NewCar"}, {name:'Autoberater-KI', route:"/ChatBot"}];
-
-
 
 function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -34,8 +29,6 @@ function NavBar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-
-  
 
   return (
     <AppBar className='navbar' position="static">
@@ -93,31 +86,16 @@ function NavBar() {
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
               {pages.map((page) => (
-                <MenuItem  key={page.name} onClick={handleCloseNavMenu}>
+                <MenuItem  key={page.name} onClick={() => {
+                  handleCloseNavMenu();
+                  navigate(page.route);
+                }}>
                   <Typography sx={{ textAlign: 'center' }}>{page.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            LOGO
-          </Typography>
+          
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button

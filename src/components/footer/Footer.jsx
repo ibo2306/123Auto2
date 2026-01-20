@@ -6,14 +6,13 @@ export default function Footer() {
       component="footer"
       sx={{
         backgroundColor: "#f5f5f5",
-        padding: "40px",
-        marginTop: "150px",
+        padding: { xs: "20px", sm: "30px", md: "40px" },
+        marginTop: { xs: "50px", md: "100px" },
         borderTop: "1px solid #ddd",
       }}
     >
       <Container maxWidth="lg">
-        <Grid container spacing={35}>
-          {/* Column 1 */}
+        <Grid container spacing={{ xs: 3, md: 4 }}>
           <Grid item xs={12} sm={4}>
             <Typography variant="h5" gutterBottom>
               123Auto
@@ -23,7 +22,6 @@ export default function Footer() {
             </Typography>
           </Grid>
 
-          {/* Column 2 */}
           <Grid item xs={12} sm={4}>
             <Typography variant="h6" gutterBottom>
               Links
@@ -39,7 +37,6 @@ export default function Footer() {
             </Link>
           </Grid>
 
-          {/* Column 3 */}
           <Grid item xs={12} sm={4}>
             <Typography variant="h6" gutterBottom>
               Rechtliches
@@ -54,7 +51,6 @@ export default function Footer() {
 
         </Grid>
 
-        {/* Bottom row */}
         <Box textAlign="center" mt={4}>
           <Typography variant="body2" color="text.secondary">
             © {new Date().getFullYear()} 123Auto. Alle Rechte vorbehalten.

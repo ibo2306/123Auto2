@@ -11,7 +11,6 @@ export default function CarCards() {
     const typeFilter = searchParams.get("type");
 
     React.useEffect(() => {
-        // URL mit optionalem type-Filter bauen
         const url = new URL("http://localhost:8000/cards");
         if (typeFilter) {
             url.searchParams.set("type", typeFilter);
@@ -31,7 +30,7 @@ export default function CarCards() {
     }, [typeFilter]);
 
     return (
-        <Box sx={{ width: "80vw", margin: "auto", textAlign: "center" }}>
+        <Box sx={{ width: { xs: "95vw", sm: "90vw", md: "80vw" }, margin: "auto", textAlign: "center", px: { xs: 1, sm: 2 } }}>
             {typeFilter && (
                 <Typography variant="h5" sx={{ mb: 3 }}>
                     Fahrzeugtyp: {typeFilter}
