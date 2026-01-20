@@ -31,7 +31,7 @@ export default function Footer() {
             <Link href="/" underline="hover" display="block">
               Startseite
             </Link>
-            <Link href="/autos" underline="hover" display="block">
+            <Link href="/cars" underline="hover" display="block">
               Autos
             </Link>
             <Link href="/kontakt" underline="hover" display="block">

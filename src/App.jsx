@@ -9,6 +9,11 @@ import NewCarPage from "./components/pages/NewCarPage";
 import ChatBotPage from "./components/pages/ChatBotPage";
 import AuthPage from "./components/pages/AuthPage";
 import ProfilePage from "./components/pages/ProfilePage";
+import CarDetailPage from "./components/pages/CarDetailPage";
+import FavoritesPage from "./components/pages/FavoritesPage";
+import KontaktPage from "./components/pages/KontaktPage";
+import ImpressumPage from "./components/pages/ImpressumPage";
+import DatenschutzPage from "./components/pages/DatenschutzPage";
 import { AuthProvider } from "./context/AuthContext";
 
 
@@ -34,17 +39,17 @@ function App() {
 
             <Route path= "/Cars" element={<CarCards/>}/>
 
+            <Route path="/car/:id" element={<CarDetailPage />} />
+
+            <Route path="/favorites" element={<FavoritesPage />} />
+
             <Route path="/auth" element={<AuthPage />} />
 
             <Route path="/profile" element={<ProfilePage />} />
 
-
-             {/* 
-             <Route path= "/contact" element={<ContactPage/>}/>
-
-             <Route path= "/privacyPolicy" element={<PrivacyPolicyPage/>}/>
-             
-             */}
+            <Route path="/kontakt" element={<KontaktPage />} />
+            <Route path="/impressum" element={<ImpressumPage />} />
+            <Route path="/datenschutz" element={<DatenschutzPage />} />
 
           </Routes>
         </AuthProvider>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
@@ -8,51 +8,246 @@ import CardActions from "@mui/material/CardActions";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
+import Chip from "@mui/material/Chip";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShareIcon from "@mui/icons-material/Share";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import { useAuth } from "../../context/AuthContext";
 
-export default function Cards({ title, subheader, imageUrl, text }) {
+
+export default function Cards({
+    id,
+    title,
+    subheader,
+    imageUrl,
+    text,
+    price,
+    brand,
+    model,
+    city,
+    first_registration,
+    type,
+    colour,
+    onFavoriteChange,
+}) {
+    const navigate = useNavigate();
+    const { user, token } = useAuth();
+    const [isFavorite, setIsFavorite] = React.useState(false);
+    const [loading, setLoading] = React.useState(false);
+
+    // Favoriten-Status laden
+    React.useEffect(() => {
+        if (user && token) {
+            // Eingeloggt: vom Backend laden
+            fetch(`http://localhost:8000/favorites/check/${id}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            })
+                .then((res) => res.json())
+                .then((data) => setIsFavorite(data.isFavorite))
+                .catch(() => setIsFavorite(false));
+        } else {
+            // Nicht eingeloggt: aus localStorage
+            const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+            setIsFavorite(favorites.includes(id));
+        }
+    }, [id, user, token]);
+
+    const handleFavoriteClick = async (e) => {
+        e.stopPropagation();
+
+        if (!user) {
+            navigate("/auth");
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            if (isFavorite) {
+                // Entfernen
+                await fetch(`http://localhost:8000/favorites/${id}`, {
+                    method: "DELETE",
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setIsFavorite(false);
+                if (onFavoriteChange) onFavoriteChange(id);
+            } else {
+                // Hinzufügen
+                await fetch(`http://localhost:8000/favorites/${id}`, {
+                    method: "POST",
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setIsFavorite(true);
+            }
+        } catch (err) {
+            console.error("Favoriten-Fehler:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Teilen-Funktion
+    const handleShare = (e) => {
+        e.stopPropagation();
+        if (navigator.share) {
+            navigator.share({
+                title: `${brand} ${model}`,
+                text: `Schau dir dieses Auto an: ${brand} ${model} für ${price?.toLocaleString("de-DE")} €`,
+                url: window.location.origin + `/car/${id}`,
+            });
+        } else {
+            navigator.clipboard.writeText(window.location.origin + `/car/${id}`);
+            alert("Link kopiert!");
+        }
+    };
+
+    // Zur Detailseite navigieren
+    const handleCardClick = () => {
+        navigate(`/car/${id}`);
+    };
+
+
+    // Jahr aus first_registration extrahieren
+    const year = first_registration?.slice(-4) || first_registration;
+
     return (
-        <Card sx={{ maxWidth: 345 }}>
+        <Card
+            sx={{
+                maxWidth: 345,
+                cursor: "pointer",
+                transition: "transform 0.2s, box-shadow 0.2s",
+                "&:hover": {
+                    transform: "translateY(-4px)",
+                    boxShadow: 6,
+                },
+            }}
+            onClick={handleCardClick}
+        >
+            {/* Header mit Marke */}
             <CardHeader
                 avatar={
-                    <Avatar sx={{ bgcolor: red[500] }} aria-label="car">
-                        {title?.[0] ?? "A"}
+                    <Avatar  aria-label="brand">
+                        {brand?.[0] ?? "A"}
                     </Avatar>
                 }
-                action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon />
-                    </IconButton>
+                title={
+                    <Typography variant="subtitle1" fontWeight="bold">
+                        {brand} {model}
+                    </Typography>
                 }
-                title={title}
-                subheader={subheader}
+                subheader={title || subheader}
             />
 
+            {/* Bild */}
             {imageUrl && (
                 <CardMedia
                     component="img"
                     height="180"
-                    image={imageUrl}      // z.B. "/assets/Auto1.jpg"
-                    alt={title}
+                    image={imageUrl}
+                    alt={`${brand} ${model}`}
+                    sx={{ objectFit: "cover" }}
                 />
             )}
 
-            <CardContent>
-                <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                    {text}
-                </Typography>
+            <CardContent sx={{ pb: 1 }}>
+                {/* Chips für Type, Stadt, Jahr */}
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5, mb: 1.5 }}>
+                    {type && (
+                        <Chip
+                            icon={<DirectionsCarIcon />}
+                            label={type}
+                            size="small"
+                            variant="outlined"
+                            color="primary"
+                        />
+                    )}
+                    {city && (
+                        <Chip
+                            icon={<LocationOnIcon />}
+                            label={city}
+                            size="small"
+                            variant="outlined"
+                        />
+                    )}
+                    {year && (
+                        <Chip
+                            icon={<CalendarTodayIcon />}
+                            label={year}
+                            size="small"
+                            variant="outlined"
+                        />
+                    )}
+                    {colour && (
+                        <Chip
+                            label={colour}
+                            size="small"
+                            variant="outlined"
+                            sx={{ textTransform: "capitalize" }}
+                        />
+                    )}
+                </Box>
+
+                {/* Preis - prominent */}
+                <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                    <LocalOfferIcon sx={{ color: "success.main", mr: 0.5 }} />
+                    <Typography
+                        variant="h5"
+                        component="span"
+                        sx={{ color: "success.main", fontWeight: "bold" }}
+                    >
+                        {price?.toLocaleString("de-DE")} €
+                    </Typography>
+                </Box>
+
+                {/* Beschreibung */}
+                {text && (
+                    <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            display: "-webkit-box",
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: "vertical",
+                        }}
+                    >
+                        {text}
+                    </Typography>
+                )}
             </CardContent>
 
-            <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites">
-                    <FavoriteIcon />
-                </IconButton>
-                <IconButton aria-label="share">
-                    <ShareIcon />
-                </IconButton>
+            {/* Actions */}
+            <CardActions sx={{ justifyContent: "space-between", px: 2, pb: 2 }}>
+                <Box>
+                    <IconButton
+                        aria-label="zu Favoriten hinzufügen"
+                        onClick={handleFavoriteClick}
+                        color={isFavorite ? "error" : "default"}
+                        disabled={loading}
+                    >
+                        {isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                    </IconButton>
+                    <IconButton aria-label="teilen" onClick={handleShare}>
+                        <ShareIcon />
+                    </IconButton>
+                </Box>
+                <Button
+                    variant="contained"
+                    size="small"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/car/${id}`);
+                    }}
+                >
+                    Details
+                </Button>
             </CardActions>
         </Card>
     );

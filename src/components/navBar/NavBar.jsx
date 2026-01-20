@@ -139,7 +139,7 @@ function NavBar() {
               </IconButton>
             </Tooltip>
             <Tooltip title="Merkzettel">
-              <IconButton >
+              <IconButton onClick={() => navigate("/favorites")}>
                   <FaHeart />
               </IconButton>
             </Tooltip>

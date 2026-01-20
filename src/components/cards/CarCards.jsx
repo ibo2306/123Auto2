@@ -37,14 +37,22 @@ export default function CarCards() {
                     Fahrzeugtyp: {typeFilter}
                 </Typography>
             )}
-            <Grid container spacing={5}>
+            <Grid container spacing={3}>
                 {cards?.map((card) => (
                     <Grid item xs={12} sm={6} md={4} key={card.id}>
                         <Cards
+                            id={card.id}
                             title={card.title}
                             subheader={card.subtitle}
                             imageUrl={card.imageUrl}
                             text={card.text}
+                            price={card.price}
+                            brand={card.brand}
+                            model={card.model}
+                            city={card.city}
+                            first_registration={card.first_registration}
+                            type={card.type}
+                            colour={card.colour}
                         />
                     </Grid>
                 ))}
