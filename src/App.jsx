@@ -46,7 +46,9 @@ function App() {
             <Route path="/profile" element={<ProfilePage />} />
 
             <Route path="/kontakt" element={<KontaktPage />} />
+
             <Route path="/impressum" element={<ImpressumPage />} />
+            
             <Route path="/datenschutz" element={<DatenschutzPage />} />
 
           </Routes>

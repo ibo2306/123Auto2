@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
@@ -34,11 +33,16 @@ function NavBar() {
     <AppBar className='navbar' position="static">
       <Container>
         <Toolbar disableGutters>
-            <img 
-            src='public\assets\AutoLogo.png'
-            alt='Logo'
-            className='Logo'
-            onClick={() => navigate("./")}
+            <Box
+              component="img"
+              src='/assets/AutoLogo.png'
+              alt='Logo'
+              className='Logo'
+              onClick={() => navigate("/")}
+              onKeyDown={(e) => e.key === 'Enter' && navigate("/")}
+              role="button"
+              tabIndex={0}
+              sx={{ cursor: 'pointer' }}
             />
           <Typography
             variant="h6"
@@ -124,7 +128,6 @@ function NavBar() {
             <Tooltip title="Benutzer">
                   <UserMenu />
             </Tooltip>
-
           </Box>
         </Toolbar>
       </Container>

@@ -8,8 +8,7 @@ import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import EuroIcon from "@mui/icons-material/Euro";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import TipsAndUpdatesIcon from "@mui/icons-material/TipsAndUpdates";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+
 
 const quickActionCategories = [
   {
@@ -39,11 +38,6 @@ const quickActionCategories = [
       "Händler in Salzburg?",
     ],
   }
-];
-
-const helpQuestions = [
-  { text: "Was kannst du alles?", icon: <HelpOutlineIcon fontSize="small" /> },
-  { text: "Tipps für den Autokauf", icon: <TipsAndUpdatesIcon fontSize="small" /> },
 ];
 
 export default function ChatSidebar({ sendMessage, onClearChat, messageCount }) {
